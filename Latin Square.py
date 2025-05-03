@@ -99,7 +99,7 @@ class LatinSquareGenerator:
         self.setup_ui()
         self.solving = False
         self.stop_flag = False
-        self.stop_message_shown = False  # Track if stop message has been shown
+        self.stop_message_shown = False  
 
     def setup_ui(self):
         self.root.geometry("900x750")
@@ -231,7 +231,7 @@ class LatinSquareGenerator:
         
         self.solving = True
         self.stop_flag = False
-        self.stop_message_shown = False  # Reset the flag when starting new generation
+        self.stop_message_shown = False  
         self.generate_btn.config(state=tk.DISABLED)
         self.stop_btn.config(state=tk.NORMAL)
         self.save_btn.config(state=tk.DISABLED)
@@ -246,12 +246,10 @@ class LatinSquareGenerator:
         self.root.after(100, lambda: self.solve(0, 0, n))
 
     def solve(self, row, col, n):
-        # Check for stop flag at the beginning of each recursive call
         if self.stop_flag:
             self.reset_controls()
             return False
 
-        # Process UI events to ensure the stop button works
         self.root.update_idletasks()
         self.root.update()
         
@@ -276,7 +274,6 @@ class LatinSquareGenerator:
             return False
 
         for num in range(1, n + 1):
-            # Check for stop flag before each iteration
             if self.stop_flag:
                 self.reset_controls()
                 return False
@@ -291,7 +288,6 @@ class LatinSquareGenerator:
                 self.root.update()
                 time.sleep(self.delay_var.get())
                 
-                # Check for stop flag after delay
                 if self.stop_flag:
                     self.reset_controls()
                     return False
@@ -303,7 +299,6 @@ class LatinSquareGenerator:
                     if self.solve(row, col + 1, n):
                         return True
 
-                # Check for stop flag before backtracking
                 if self.stop_flag:
                     self.reset_controls()
                     return False
@@ -392,9 +387,9 @@ class LatinSquareGenerator:
         self.steps_label.config(text=f"Steps: {self.steps}")
 
     def stop_generation(self):
-        if not self.stop_flag:  # Only set the flag if it's not already set
+        if not self.stop_flag: 
             self.stop_flag = True
-            self.stop_btn.config(state=tk.DISABLED)  # Disable stop button immediately
+            self.stop_btn.config(state=tk.DISABLED)  
 
     def finish_generation(self):
         self.update_progress(100)
@@ -407,13 +402,12 @@ class LatinSquareGenerator:
         messagebox.showinfo("Complete", f"Latin Square generated!\nTime: {elapsed_time:.2f}s\nSteps: {self.steps}")
 
     def reset_controls(self):
-        if not self.stop_message_shown:  # Only show message once
+        if not self.stop_message_shown: 
             self.stop_message_shown = True
             self.generate_btn.config(state=tk.NORMAL)
             self.stop_btn.config(state=tk.DISABLED)
             self.solving = False
             
-            # Show message only when explicitly stopped by user (not when algorithm naturally completes)
             if self.stop_flag:
                 messagebox.showinfo("Stopped", "Generation stopped by user.")
 
